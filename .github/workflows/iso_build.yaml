@@ -1,0 +1,57 @@
+name: iso_build
+on:
+  workflow_dispatch:
+#   schedule:
+#     - cron:  '0 3 * * *'
+
+concurrency: 
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  prepare-release:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: styfle/cancel-workflow-action@0.12.0
+        with:
+          access_token: ${{ github.token }}
+      - id: time
+        uses: nanzm/get-time-action@v2.0
+        with:
+          format: 'YYYYMMDDHHmm'
+      - id: receive
+        uses: boredland/kernel-info@main
+    outputs:
+      release_tag: ${{ steps.time.outputs.time }} 
+      longterm: ${{ steps.receive.outputs.longterm-pkg }}
+      stable: ${{ steps.receive.outputs.stable-pkg }}
+  release:
+    runs-on: ubuntu-22.04
+    needs: prepare-release    
+    strategy:
+      matrix:
+        edition: [awesome]
+        branch: [stable]
+        scope: [minimal, full]
+        kernel: 
+          - ${{ needs.prepare-release.outputs.longterm }}
+#           - ${{ needs.prepare-release.outputs.stable }}
+    steps:
+      - uses: styfle/cancel-workflow-action@0.12.0
+        with:
+          access_token: ${{ github.token }}
+      - id: image-build
+        uses: manjaro/manjaro-iso-action@main
+        with:
+          iso-profiles-repo: https://github.com/joaopauloalbq/iso-profiles/
+          edition: ${{ matrix.edition }}
+          branch: ${{ matrix.branch }}
+          scope: ${{ matrix.scope }}
+          kernel: ${{ matrix.kernel }}
+          release-tag: ${{ needs.prepare-release.outputs.release_tag }}
+      - name: rollback
+        if: ${{ failure() || cancelled() }}
+        run: |
+          echo ${{ github.token }} | gh auth login --with-token
+          gh release delete ${{ needs.prepare-release.outputs.release_tag }} -y --repo ${{ github.repository }}
+          git push --delete origin ${{ needs.prepare-release.outputs.release_tag }}
