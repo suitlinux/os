@@ -32,7 +32,7 @@ jobs:
       matrix:
         edition: [awesome]
         branch: [stable]
-        scope: [minimal, full]
+        scope: [minimal]
         kernel: 
           - ${{ needs.prepare-release.outputs.longterm }}
 #           - ${{ needs.prepare-release.outputs.stable }}
