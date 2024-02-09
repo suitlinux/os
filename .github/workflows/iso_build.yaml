@@ -43,7 +43,7 @@ jobs:
       - id: image-build
         uses: suitlinux/suit-iso-action@main
         with:
-          iso-profiles-repo: https://github.com/manjaro-sway/iso-profiles
+          iso-profiles-repo: joaopauloalbq/iso-profiles
           custom-repo: 'closet'
           custom-repo-url: 'https\:\/\/raw\.githubusercontent\.com\/suitlinux\/\$repo\/stable\/\$arch\/'
           edition: ${{ matrix.edition }}
