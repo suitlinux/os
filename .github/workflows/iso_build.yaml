@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   prepare-release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: styfle/cancel-workflow-action@0.12.1
         with:
@@ -26,7 +26,7 @@ jobs:
       longterm: ${{ steps.receive.outputs.longterm-pkg }}
       stable: ${{ steps.receive.outputs.stable-pkg }}
   release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: prepare-release    
     strategy:
       matrix:
