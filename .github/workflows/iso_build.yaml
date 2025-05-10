@@ -45,7 +45,7 @@ jobs:
         with:
           iso-profiles-repo: https://github.com/joaopauloalbq/iso-profiles/
           custom-repo: 'closet'
-          custom-repo-url: 'https\:\/\/raw\.githubusercontent\.com\/suitlinux\/\$repo\/stable\/\$arch\/'
+          custom-repo-url: 'https\:\/\/raw\.githubusercontent\.com\/suitlinux\/\$repo\/${{ matrix.branch }}\/\$arch\/'
           edition: ${{ matrix.edition }}
           branch: ${{ matrix.branch }}
           scope: ${{ matrix.scope }}
