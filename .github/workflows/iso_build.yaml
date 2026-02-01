@@ -12,7 +12,7 @@ jobs:
   prepare-release:
     runs-on: ubuntu-24.04
     steps:
-      - uses: styfle/cancel-workflow-action@0.12.1
+      - uses: styfle/cancel-workflow-action@0.13.0
         with:
           access_token: ${{ github.token }}
       - id: time
@@ -37,7 +37,7 @@ jobs:
           - ${{ needs.prepare-release.outputs.longterm }}
 #           - ${{ needs.prepare-release.outputs.stable }}
     steps:
-      - uses: styfle/cancel-workflow-action@0.12.1
+      - uses: styfle/cancel-workflow-action@0.13.0
         with:
           access_token: ${{ github.token }}
       - id: image-build
