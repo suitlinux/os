@@ -51,6 +51,7 @@ jobs:
           scope: ${{ matrix.scope }}
           kernel: ${{ matrix.kernel }}
           release-tag: ${{ needs.prepare-release.outputs.release_tag }}
+          build-mirror: 'https://mirror.fcix.net/manjaro'
       - name: rollback
         if: ${{ failure() || cancelled() }}
         run: |
